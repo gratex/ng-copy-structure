@@ -1,8 +1,9 @@
 {
 	"name": "ng-copy-structure",
 	"displayName": "ng-copy-structure",
-	"description": "yes",
-	"version": "0.0.1",
+	"description": "Visual Studio Code extension for copying folder structure.",
+	"version": "1.0.0",
+	"publisher": "adros1",
 	"engines": {
 		"vscode": "^1.54.0"
 	},
@@ -21,10 +22,33 @@
 			}
 		],
 		"menus": {
-			"explorer/context": [{
-				"when": "explorerResourceIsFolder",
-				"command": "ng-copy-structure.copy"
-			}]
+			"explorer/context": [
+				{
+					"when": "explorerResourceIsFolder",
+					"command": "ng-copy-structure.copy"
+				}
+			]
+		},
+		"configuration": {
+			"title": "Copy structure",
+			"properties": {
+				"ngCopyStructure.multipleReplaces.FILE NAME": {
+					"type": "boolean",
+					"default": true,
+					"description": "If true, more than one file name replace may be defined"
+				},
+				"ngCopyStructure.multipleReplaces.CONTENT": {
+					"type": "boolean",
+					"default": true,
+					"description": "If true, more than one content replace may be defined"
+				},
+				"ngCopyStructure.transform": {
+					"type": "string",
+					"editPresentation": "multilineText",
+					"default": "(name) => name.replace(/(^|-)(.)/g, (m, p1, p2) => p2.toLocaleUpperCase())",
+					"description": "Transform function from first file name replace to first content replace default value. If empty, no default value prefilled."
+				}
+			}
 		}
 	},
 	"scripts": {
@@ -33,19 +57,22 @@
 		"watch": "tsc -watch -p ./",
 		"pretest": "npm run compile && npm run lint",
 		"lint": "eslint src --ext ts",
-		"test": "node ./out/test/runTest.js"
+		"test": "node ./out/test/runTest.js",
+		"publish": "vsce publish"
 	},
 	"devDependencies": {
-		"@types/vscode": "^1.54.0",
 		"@types/glob": "^7.1.4",
 		"@types/mocha": "^9.0.0",
 		"@types/node": "14.x",
+		"@types/vscode": "^1.54.0",
 		"@typescript-eslint/eslint-plugin": "^4.31.1",
 		"@typescript-eslint/parser": "^4.31.1",
+		"@vscode/test-electron": "^1.6.2",
 		"eslint": "^7.32.0",
 		"glob": "^7.1.7",
 		"mocha": "^9.1.1",
 		"typescript": "^4.4.3",
-		"@vscode/test-electron": "^1.6.2"
-	}
+		"vsce": "^1.100.1"
+	},
+	"dependencies": {}
 }

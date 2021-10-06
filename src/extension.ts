@@ -1,5 +1,6 @@
 import * as vscode from 'vscode';
 import * as path from 'path';
+import * as vm from 'vm';
 
 export function activate(context: vscode.ExtensionContext) {
 	let disposable = vscode.commands.registerCommand('ng-copy-structure.copy', (args) => {
@@ -17,15 +18,23 @@ interface Replace {
 	search: string;
 	replace: string;
 }
+interface Config {
+	// eslint-disable-next-line @typescript-eslint/naming-convention
+	multipleReplaces: { 'FILE NAME': boolean; CONTENT: boolean; },
+	transform: string
+}
 
 enum ReplaceType { fileName = 'FILE NAME', content = 'CONTENT' };
+
 
 class CopyStructureExtension {
 
 	private dirName: string;
+	private config: Config;
 
 	constructor(private dirPath: string) {
 		this.dirName = path.basename(dirPath);
+		this.config = vscode.workspace.getConfiguration(`ngCopyStructure`) as any;
 	}
 
 	init() {
@@ -66,7 +75,10 @@ class CopyStructureExtension {
 				ignoreFocusOut: true
 			}).then((replace) => {
 				if (replace === undefined) { throw new Error('CANCEL'); }
-				return this.askForReplaceParam([...arr, { search, replace }], type, firstNameReplace);
+				if (this.config.multipleReplaces[type]) {
+					return this.askForReplaceParam([...arr, { search, replace }], type, firstNameReplace);
+				}
+				return [...arr, { search, replace }];
 			});
 		});
 	}
@@ -85,7 +97,11 @@ class CopyStructureExtension {
 		console.error(e);
 	}
 
-	private nameToContent(name: string) {
-		return name.replace(/(^|-)(.)/g, (m, p1, p2) => p2.toLocaleUpperCase());
+	private nameToContent(val: string) {
+		const { config: { transform } } = this;
+		if (!transform) { return null; }
+		var ctx = { result: null, val };
+		vm.runInNewContext(`const transform = ${transform}; result = transform(val)`, ctx);
+		return ctx.result;
 	}
 }
