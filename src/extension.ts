@@ -1,5 +1,6 @@
 import * as vscode from 'vscode';
 import * as path from 'path';
+import * as fs from 'fs';
 
 export function activate(context: vscode.ExtensionContext) {
 	let disposable = vscode.commands.registerCommand('ng-copy-structure.copy', (args) => {
@@ -30,7 +31,8 @@ class CopyStructureExtension {
 
 	init() {
 		this.buildParams()
-			.then((params) => vscode.window.showInformationMessage(JSON.stringify(params, null, '\t')))
+			//.then((params) => vscode.window.showInformationMessage(JSON.stringify(params, null, '\t')))
+			.then((params) => this.renameAndCopyDir(params, this.dirPath))
 			.catch((e) => this.handleError(e));
 	}
 
@@ -87,5 +89,34 @@ class CopyStructureExtension {
 
 	private nameToContent(name: string) {
 		return name.replace(/(^|-)(.)/g, (m, p1, p2) => p2.toLocaleUpperCase());
+	}
+
+	private replaceAll(replaces: Replace[], text: string) {
+		return replaces.reduce((res, curReplace) => res.split(curReplace.search).join(curReplace.replace), text);
+	}
+
+	private renameAndCopyFile({ nameReplaces, contentReplaces }, file: string, dir: string) {
+		const newFileName = this.replaceAll(nameReplaces, path.basename(file));
+		const newFilePath = path.resolve(dir, newFileName);
+		const data = fs.readFileSync(file, { encoding: 'utf8' });
+		fs.writeFileSync(newFilePath, this.replaceAll(contentReplaces, data), { encoding: 'utf8' });
+		console.log(file + '=>\n' + newFilePath);
+	}
+
+	private renameAndCopyDir(params, sourceDir: string, destDir?: string) {
+		const { nameReplaces } = params;
+		destDir = destDir ? this.replaceAll(nameReplaces, destDir) : this.replaceAll(nameReplaces, sourceDir);
+		try {
+			fs.mkdirSync(destDir);
+		} catch (e) {
+			if (e.code !== 'EEXIST') {
+				throw (e);
+			}
+		};
+		const dirItems = fs.readdirSync(sourceDir);
+		return dirItems.map((dirItem) => {
+			const resolvedItem = path.resolve(sourceDir, dirItem);
+			return (fs.statSync(resolvedItem)).isDirectory() ? this.renameAndCopyDir(params, resolvedItem, path.resolve(destDir, dirItem)) : this.renameAndCopyFile(params, resolvedItem, path.resolve(dirItem, destDir));
+		});
 	}
 }
