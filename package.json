@@ -52,6 +52,88 @@
 					"editPresentation": "multilineText",
 					"default": "(name) => name.replace(/(^|-)(.)/g, (m, p1, p2) => p2.toLocaleUpperCase())",
 					"description": "Transform function from first file name replace to first content replace default value. If empty, no default value prefilled."
+				},
+				"ngCopyStructure.allReplaces.ALL REPLACES": {
+					"type": "object",
+					"additionalProperties": false,
+					"required": [
+						"nameReplaces",
+						"contentReplaces"
+					],
+					"properties": {
+						"nameReplaces": {
+							"type": "array",
+							"items": {
+								"type": "object",
+								"required": [
+									"search",
+									"replace"
+								],
+								"additionalProperties": false,
+								"properties": {
+									"search": {
+										"type": "string"
+									},
+									"replace": {
+										"type": "string"
+									}
+								}
+							}
+						},
+						"contentReplaces": {
+							"type": "array",
+							"items": {
+								"type": "object",
+								"required": [
+									"search",
+									"replace"
+								],
+								"additionalProperties": false,
+								"properties": {
+									"search": {
+										"type": "string"
+									},
+									"replace": {
+										"type": "string"
+									}
+								}
+							}
+						}
+					},
+					"default": {
+						"ngCopyStructure.allReplaces.ALL REPLACES": {
+							"nameReplaces": [
+								{
+									"search": "sprava-cis-awfnazov-awf",
+									"replace": "sprava-cis-awfnazov-is"
+								}
+							],
+							"contentReplaces": [
+								{
+									"search": "SpravaCisAwfNazovAwf",
+									"replace": "SpravaCisAwfNazovIs"
+								},
+								{
+									"search": "sprava-cis-awfnazov-awf",
+									"replace": "sprava-cis-awfnazov-is"
+								},
+								{
+									"search": "CIsEntityAwfName",
+									"replace": "CIsEntityIsName"
+								},
+								{
+									"search": "title_FrmSpravaCisAWFNazovAWF",
+									"replace": "title_FrmSpravaCisAWFNazovIS"
+								}
+							]
+						}
+					},
+					"description": "Edit all replaces at one place in json"
+				},
+				"ngCopyStructure.allReplaces.USE ALL REPLACES": {
+					"type": "boolean",
+					"default": true,
+					"description": "Use all replaces from setting object"
 				}
 			}
 		}

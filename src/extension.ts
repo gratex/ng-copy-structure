@@ -21,6 +21,8 @@ interface Replace {
 interface Config {
 	// eslint-disable-next-line @typescript-eslint/naming-convention
 	multipleReplaces: { 'FILE NAME': boolean; CONTENT: boolean; },
+	// eslint-disable-next-line @typescript-eslint/naming-convention
+	allReplaces: { 'ALL REPLACES': object; 'USE ALL REPLACES': boolean; },
 	transform: string
 }
 
@@ -38,6 +40,7 @@ class CopyStructureExtension {
 	}
 
 	init() {
+
 		this.buildParams()
 			//.then((params) => vscode.window.showInformationMessage(JSON.stringify(params, null, '\t')))
 			.then((params) => this.renameAndCopyDir(params, this.dirPath))
@@ -45,6 +48,9 @@ class CopyStructureExtension {
 	}
 
 	private buildParams() {
+		if (this.config.allReplaces['USE ALL REPLACES']) {
+			return Promise.resolve(this.config.allReplaces['ALL REPLACES']);
+		}
 		const thenable = this.buildNameReplaceParams()
 			.then((nameReplaces) => Promise.all([nameReplaces, this.buildContentReplaceParams(nameReplaces[0])]))
 			.then(([nameReplaces, contentReplaces]) => ({ nameReplaces, contentReplaces }));
