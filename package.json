@@ -104,27 +104,15 @@
 						"ngCopyStructure.allReplaces.ALL REPLACES": {
 							"nameReplaces": [
 								{
-									"search": "sprava-cis-awfnazov-awf",
-									"replace": "sprava-cis-awfnazov-is"
+									"search": "sample search",
+									"replace": "sample replace"
 								}
 							],
 							"contentReplaces": [
 								{
-									"search": "SpravaCisAwfNazovAwf",
-									"replace": "SpravaCisAwfNazovIs"
-								},
-								{
-									"search": "sprava-cis-awfnazov-awf",
-									"replace": "sprava-cis-awfnazov-is"
-								},
-								{
-									"search": "CIsEntityAwfName",
-									"replace": "CIsEntityIsName"
-								},
-								{
-									"search": "title_FrmSpravaCisAWFNazovAWF",
-									"replace": "title_FrmSpravaCisAWFNazovIS"
-								}
+									"search": "sample search",
+									"replace": "sample replace"
+								}								
 							]
 						}
 					},
