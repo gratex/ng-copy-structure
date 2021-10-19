@@ -55,6 +55,51 @@
 				},
 				"ngCopyStructure.allReplaces.ALL REPLACES": {
 					"type": "object",
+					"additionalProperties": false,
+					"required": [
+						"nameReplaces",
+						"contentReplaces"
+					],
+					"properties": {
+						"nameReplaces": {
+							"type": "array",
+							"items": {
+								"type": "object",
+								"required": [
+									"search",
+									"replace"
+								],
+								"additionalProperties": false,
+								"properties": {
+									"search": {
+										"type": "string"
+									},
+									"replace": {
+										"type": "string"
+									}
+								}
+							}
+						},
+						"contentReplaces": {
+							"type": "array",
+							"items": {
+								"type": "object",
+								"required": [
+									"search",
+									"replace"
+								],
+								"additionalProperties": false,
+								"properties": {
+									"search": {
+										"type": "string"
+									},
+									"replace": {
+										"type": "string"
+									}
+								}
+							}
+						}
+					},
 					"default": {
 						"ngCopyStructure.allReplaces.ALL REPLACES": {
 							"nameReplaces": [
