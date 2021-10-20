@@ -121,7 +121,7 @@
 					},
 					"description": "Edit all replaces at one place in json"
 				},
-				"ngCopyStructure.allReplaces.useAllRepalces": {
+				"ngCopyStructure.allReplaces.useAllReplaces": {
 					"type": "boolean",
 					"default": false,
 					"description": "Use all replaces from setting object"

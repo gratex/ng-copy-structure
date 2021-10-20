@@ -24,7 +24,7 @@ interface Config {
 	// eslint-disable-next-line @typescript-eslint/naming-convention
 	allReplaces: {
 		replaces: { nameReplaces: Replace[], contentReplaces: Replace[] };
-		useAllRepalces: boolean;
+		useAllReplaces: boolean;
 	};
 	replaceFileReplacesInContent: boolean;
 	transform: string
