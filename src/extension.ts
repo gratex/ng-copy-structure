@@ -22,7 +22,11 @@ interface Config {
 	// eslint-disable-next-line @typescript-eslint/naming-convention
 	multipleReplaces: { 'FILE NAME': boolean; CONTENT: boolean; },
 	// eslint-disable-next-line @typescript-eslint/naming-convention
-	allReplaces: { 'ALL REPLACES': object; 'USE ALL REPLACES': boolean; },
+	allReplaces: {
+		replaces: { nameReplaces: Replace[], contentReplaces: Replace[] };
+		useAllRepalces: boolean;
+	};
+	replaceFileReplacesInContent: boolean;
 	transform: string
 }
 
@@ -48,12 +52,15 @@ class CopyStructureExtension {
 	}
 
 	private buildParams() {
-		if (this.config.allReplaces['USE ALL REPLACES']) {
-			return Promise.resolve(this.config.allReplaces['ALL REPLACES']);
+		if (this.config.allReplaces.useAllRepalces) {
+			return Promise.resolve(this.config.allReplaces.replaces);
 		}
 		const thenable = this.buildNameReplaceParams()
 			.then((nameReplaces) => Promise.all([nameReplaces, this.buildContentReplaceParams(nameReplaces[0])]))
-			.then(([nameReplaces, contentReplaces]) => ({ nameReplaces, contentReplaces }));
+			.then(([nameReplaces, contentReplaces]) => ({
+				nameReplaces,
+				contentReplaces: this.config.replaceFileReplacesInContent ? nameReplaces.concat(contentReplaces) : contentReplaces
+			}));
 		return Promise.resolve(thenable);
 	}
 

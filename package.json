@@ -47,13 +47,18 @@
 					"default": true,
 					"description": "If true, more than one content replace may be defined"
 				},
+				"ngCopyStructure.replaceFileReplacesInContent": {
+					"type": "boolean",
+					"default": true,
+					"description": "If true, file name replaces will be used also in content"
+				},
 				"ngCopyStructure.transform": {
 					"type": "string",
 					"editPresentation": "multilineText",
 					"default": "(name) => name.replace(/(^|-)(.)/g, (m, p1, p2) => p2.toLocaleUpperCase())",
 					"description": "Transform function from first file name replace to first content replace default value. If empty, no default value prefilled."
 				},
-				"ngCopyStructure.allReplaces.ALL REPLACES": {
+				"ngCopyStructure.allReplaces.replaces": {
 					"type": "object",
 					"additionalProperties": false,
 					"required": [
@@ -101,26 +106,24 @@
 						}
 					},
 					"default": {
-						"ngCopyStructure.allReplaces.ALL REPLACES": {
-							"nameReplaces": [
-								{
-									"search": "sample search",
-									"replace": "sample replace"
-								}
-							],
-							"contentReplaces": [
-								{
-									"search": "sample search",
-									"replace": "sample replace"
-								}
-							]
-						}
+						"nameReplaces": [
+							{
+								"search": "sample search",
+								"replace": "sample replace"
+							}
+						],
+						"contentReplaces": [
+							{
+								"search": "sample search",
+								"replace": "sample replace"
+							}
+						]
 					},
 					"description": "Edit all replaces at one place in json"
 				},
-				"ngCopyStructure.allReplaces.USE ALL REPLACES": {
+				"ngCopyStructure.allReplaces.useAllRepalces": {
 					"type": "boolean",
-					"default": true,
+					"default": false,
 					"description": "Use all replaces from setting object"
 				}
 			}
