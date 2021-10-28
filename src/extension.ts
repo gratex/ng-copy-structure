@@ -5,7 +5,7 @@ import * as vm from 'vm';
 
 export function activate(context: vscode.ExtensionContext) {
 	let disposable = vscode.commands.registerCommand('ng-copy-structure.copy', (args) => {
-		const cse = new CopyStructureExtension(args.path);
+		const cse = new CopyStructureExtension(args.fsPath);
 		cse.init();
 	});
 
@@ -24,7 +24,7 @@ interface Config {
 	// eslint-disable-next-line @typescript-eslint/naming-convention
 	allReplaces: {
 		replaces: { nameReplaces: Replace[], contentReplaces: Replace[] };
-		useAllReplaces: boolean;
+		useAllRepalces: boolean;
 	};
 	replaceFileReplacesInContent: boolean;
 	transform: string
