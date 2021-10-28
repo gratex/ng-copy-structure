@@ -2,7 +2,7 @@
 	"name": "ng-copy-structure",
 	"displayName": "ng-copy-structure",
 	"description": "Visual Studio Code extension for copying folder structure.",
-	"version": "1.5.0",
+	"version": "1.5.1",
 	"publisher": "adros1",
 	"engines": {
 		"vscode": "^1.54.0"
